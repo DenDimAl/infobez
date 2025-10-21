@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::collections::BTreeSet;
 use std::fs::{File, OpenOptions, read_to_string};
 use std::io::{BufRead, BufReader, BufWriter, Write};
 
@@ -133,18 +134,153 @@ fn cipher_secret(filename: &str, text: &mut String) {
     *text = b.into_iter().collect();
 }
 
+fn decipher_secret(text: &String) -> String{
+    let t:Vec<char> = text.chars().collect();
+    let mut analog_set_back = BTreeSet::new();
+    
+    analog_set_back.insert('a');
+    analog_set_back.insert('e');
+    analog_set_back.insert('o');
+    analog_set_back.insert('p');
+    analog_set_back.insert('c');
+    analog_set_back.insert('y');
+    analog_set_back.insert('x');
+    analog_set_back.insert('k');
+    analog_set_back.insert('m');
+    analog_set_back.insert('t');
+    analog_set_back.insert('b');
+    analog_set_back.insert('h');
+    
+    analog_set_back.insert('A');
+    analog_set_back.insert('B');
+    analog_set_back.insert('E');
+    analog_set_back.insert('K');
+    analog_set_back.insert('M');
+    analog_set_back.insert('H');
+    analog_set_back.insert('O');
+    analog_set_back.insert('P');
+    analog_set_back.insert('C');
+    analog_set_back.insert('T');
+    analog_set_back.insert('Y');
+    analog_set_back.insert('X');
+
+    let mut analog_set = BTreeSet::new();
+    
+    analog_set.insert('а');
+    analog_set.insert('е');
+    analog_set.insert('о');
+    analog_set.insert('р');
+    analog_set.insert('с');
+    analog_set.insert('у');
+    analog_set.insert('х');
+    analog_set.insert('к');
+    analog_set.insert('м');
+    analog_set.insert('т');
+    analog_set.insert('в');
+    analog_set.insert('н');
+    
+    analog_set.insert('А');
+    analog_set.insert('В');
+    analog_set.insert('Е');
+    analog_set.insert('К');
+    analog_set.insert('М');
+    analog_set.insert('Н');
+    analog_set.insert('О');
+    analog_set.insert('Р');
+    analog_set.insert('С');
+    analog_set.insert('Т');
+    analog_set.insert('У');
+    analog_set.insert('Х');
+
+    let mut u: u32 = 0;
+    let mut pow: u32=32;
+    let mut answer:String = String::from("");
+
+    for i in 0..t.len(){
+        if analog_set.get(&t[i]).is_some() {
+            pow -=1;
+        }
+        else if analog_set_back.get(&t[i]).is_some(){
+            u |= two_power(pow - 1);
+            pow -=1;
+            println!("умножилось из-за {}, pow: {}, u: {}", t[i], pow, u);
+        }
+        if pow == 0 {
+
+            pow = 32;
+            answer.push(char::from_u32(u).unwrap());
+            u = 0;
+        }
+    }
+
+    return answer;
+}
+
 fn main() {
+     let mut analog_set_back = BTreeSet::new();
+    
+    analog_set_back.insert('a');
+    analog_set_back.insert('e');
+    analog_set_back.insert('o');
+    analog_set_back.insert('p');
+    analog_set_back.insert('c');
+    analog_set_back.insert('y');
+    analog_set_back.insert('x');
+    analog_set_back.insert('k');
+    analog_set_back.insert('m');
+    analog_set_back.insert('t');
+    analog_set_back.insert('b');
+    analog_set_back.insert('h');
+    
+    analog_set_back.insert('A');
+    analog_set_back.insert('B');
+    analog_set_back.insert('E');
+    analog_set_back.insert('K');
+    analog_set_back.insert('M');
+    analog_set_back.insert('H');
+    analog_set_back.insert('O');
+    analog_set_back.insert('P');
+    analog_set_back.insert('C');
+    analog_set_back.insert('T');
+    analog_set_back.insert('Y');
+    analog_set_back.insert('X');
+
+     let mut analog_set = BTreeSet::new();
+    
+    analog_set.insert('а');
+    analog_set.insert('е');
+    analog_set.insert('о');
+    analog_set.insert('р');
+    analog_set.insert('с');
+    analog_set.insert('у');
+    analog_set.insert('х');
+    analog_set.insert('к');
+    analog_set.insert('м');
+    analog_set.insert('т');
+    analog_set.insert('в');
+    analog_set.insert('н');
+    
+    analog_set.insert('А');
+    analog_set.insert('В');
+    analog_set.insert('Е');
+    analog_set.insert('К');
+    analog_set.insert('М');
+    analog_set.insert('Н');
+    analog_set.insert('О');
+    analog_set.insert('Р');
+    analog_set.insert('С');
+    analog_set.insert('Т');
+    analog_set.insert('У');
+    analog_set.insert('Х');
+
     let mut s:String = String::from("Давай будем честными, мы понятия не имеем, что тут можно написать. Мало того, 
     нужно написать что-то с определённым условием, мол, должно быть хотя бы 32 буквы-аналога. Это целая куча! Кто вообще в здравом уме
     будет писать осмысленный текст, причём аккуратненько, ручкой или пальчиком проводя по строке и проговаривая А, В, К,
     отлично ещё Энадцать штук таких же буковок! Безумие!");
     cipher_secret("C:/Users/ddeni/Downloads/lorem/lorem/hide_me.txt", &mut s);
-    //s = s.replace(" ", "1");
-    //s = s.replace("\n", "0");
-    //println!("{}",s);
-    //let res: String = decipher(&s);
-   let a:char = 'г';
-   println!("{}", a as u32);
-    println!("{}",s);
+    let mut n:Vec<char> = s.chars().collect();
+    //println!("{}", s);
+   let res:String = decipher_secret(&s);
+   println!("{}", res);
 
 }
