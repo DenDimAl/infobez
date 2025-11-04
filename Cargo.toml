@@ -1,0 +1,10 @@
+[package]
+name = "ciphers"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+aes = "0.8.4"
+aes-gcm = "0.10.3"
+magic-crypt = "4.0.1"
+rand = "0.9.2"
