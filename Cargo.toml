@@ -1,0 +1,9 @@
+[package]
+name = "paroles"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+digest = "0.10.7"
+hashes = "0.1.9"
+sha2 = "0.10"
